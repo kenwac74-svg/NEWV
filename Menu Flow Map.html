@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Flow Map — LONGRISE</title>
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/colors.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/typography.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/styles.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(90% 55% at 72% -8%, #160f0c 0%, var(--color-ink) 58%),
+      var(--color-ink);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+  .gold {
+    background: linear-gradient(115deg, var(--gold-highlight) 8%, var(--gold-base) 52%, var(--gold-glow) 96%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-base); }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 18px 40px;
+    background: rgba(7,5,4,0.86); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-white-soft);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { height: 30px; }
+  .brand .wm { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: 0.26em; color: var(--color-cream); }
+  .brand .wm em { font-style: normal; color: var(--gold-glow); }
+  .brand .tag { margin-left: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-secondary); border-left: 1px solid var(--line-gold-mid); padding-left: 12px; white-space: nowrap; }
+
+  /* segmented toggle */
+  .seg { display: flex; gap: 4px; padding: 4px; border-radius: 999px; border: 1px solid var(--line-gold-mid); background: rgba(185,154,107,0.06); }
+  .seg button {
+    appearance: none; border: 0; cursor: pointer; font-family: var(--font-body);
+    font-size: 12.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 9px 22px; border-radius: 999px; color: var(--text-secondary); background: transparent;
+    white-space: nowrap;
+    transition: color .18s, background .18s;
+  }
+  .seg button.on { color: var(--color-ink); background: linear-gradient(120deg, var(--gold-highlight), var(--gold-base)); }
+
+  /* ---------- layout ---------- */
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 44px 40px 100px; }
+  .view { display: none; }
+  .view.on { display: block; }
+
+  .doc-head { margin-bottom: 40px; }
+  .doc-head h1 { font-family: var(--font-display); font-weight: 800; font-size: 40px; line-height: 1.1; letter-spacing: 0.01em; margin: 12px 0 10px; }
+  .doc-head p { font-size: 17px; color: var(--text-secondary); max-width: 720px; margin: 0; }
+
+  /* stage block */
+  .stage { margin-top: 52px; }
+  .stage-head { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+  .stage-num {
+    width: 38px; height: 38px; flex: none; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(140deg, var(--gold-highlight), var(--gold-base));
+    color: var(--color-ink); font-family: var(--font-display); font-weight: 800; font-size: 19px;
+  }
+  .stage-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; letter-spacing: 0.03em; margin: 0; }
+  .stage-head .sub { font-size: 14px; color: var(--text-secondary); margin: 2px 0 0; }
+
+  /* generic node */
+  .node {
+    background-color: var(--surface-card); background-image: var(--glow-card-inner);
+    border: 1px solid var(--border-card); border-radius: 16px; padding: 18px 20px;
+  }
+  .node .k { font-size: 11px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-secondary); }
+  .node .v { font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: 0.04em; margin-top: 4px; }
+  .node .d { font-size: 13px; color: var(--text-secondary); margin-top: 7px; }
+
+  /* ---------- entry split ---------- */
+  .split { display: grid; grid-template-columns: 220px 150px 1fr; align-items: center; gap: 0; }
+  .split .login {
+    text-align: center; padding: 26px 18px;
+    border: 1px solid var(--line-gold-mid); border-radius: 16px;
+    background: rgba(185,154,107,0.05);
+  }
+  .split .login .ic { width: 46px; height: 46px; margin: 0 auto 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(185,154,107,0.1); color: var(--gold-highlight); }
+  .split .login .v { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: 0.06em; }
+  .split .login .d { font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; }
+  .connector { width: 150px; height: 230px; }
+  .branches { display: flex; flex-direction: column; gap: 26px; }
+  .branch { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+  .branch .who {
+    font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--text-secondary); writing-mode: horizontal-tb; white-space: nowrap;
+  }
+  .land {
+    flex: 1; display: flex; align-items: center; gap: 16px;
+    border-radius: 16px; padding: 18px 22px;
+  }
+  .land .badge { width: 50px; height: 50px; flex: none; border-radius: 13px; display: flex; align-items: center; justify-content: center; }
+  .land .v { font-family: var(--font-display); font-weight: 800; font-size: 21px; letter-spacing: 0.05em; }
+  .land .d { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+  .land.dash { border: 1px solid var(--line-gold-mid); background: linear-gradient(120deg, rgba(229,195,152,0.14), rgba(185,154,107,0.04)); }
+  .land.dash .badge { background: linear-gradient(140deg, var(--gold-highlight), var(--gold-base)); color: var(--color-ink); }
+  .land.dash .v { color: var(--gold-highlight); }
+  .land.start { border: 1.5px solid var(--gold-glow); background: rgba(251,191,36,0.07); position: relative; box-shadow: 0 0 0 0 rgba(251,191,36,0.4); animation: pulse 2.4s infinite; }
+  .land.start .badge { background: linear-gradient(140deg, var(--gold-glow), var(--gold-deep)); color: var(--color-ink); }
+  .land.start .v { color: var(--gold-glow); }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(251,191,36,0.32); } 70% { box-shadow: 0 0 0 12px rgba(251,191,36,0); } 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); } }
+  .who-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+  .who-pill.new { color: var(--gold-glow); border: 1px solid rgba(251,191,36,0.4); background: rgba(251,191,36,0.06); }
+  .who-pill.act { color: var(--gold-highlight); border: 1px solid var(--line-gold-mid); background: rgba(185,154,107,0.05); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  /* ---------- PC nav mockup ---------- */
+  .pcnav {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 22px; height: 72px; border-radius: 16px;
+    background: rgba(7,5,4,0.9); border: 1px solid var(--line-white-soft);
+  }
+  .pcnav .logo { display: flex; align-items: center; gap: 9px; padding-right: 8px; }
+  .pcnav .logo img { height: 24px; }
+  .pcnav .logo .wm { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: 0.24em; color: var(--color-cream); }
+  .pcnav .logo .wm em { font-style: normal; color: var(--gold-glow); }
+  .pcnav .item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-secondary); padding: 10px 15px; border-radius: 10px; border: 1.5px solid transparent;
+  }
+  .pcnav .item svg { width: 17px; height: 17px; }
+  .pcnav .item.active { color: var(--gold-highlight); border-color: var(--line-gold-mid); background: rgba(185,154,107,0.09); }
+  .pcnav .spacer { flex: 1; }
+  .pcnav .util { display: flex; align-items: center; gap: 10px; }
+  .pcnav .item.help { color: var(--text-secondary); border: 1.5px solid var(--line-white-soft); }
+  .pcnav .bal { font-size: 12px; font-weight: 800; color: var(--gold-highlight); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line-gold-mid); }
+  .pcnav .av { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line-gold-mid); color: var(--gold-highlight); font-family: var(--font-display); font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; background: rgba(185,154,107,0.08); }
+
+  /* annotation columns under nav */
+  .annos { display: grid; gap: 14px; margin-top: 18px; grid-template-columns: repeat(5, 1fr); }
+  .anno { border-top: 2px solid var(--line-gold-soft); padding-top: 14px; position: relative; }
+  .anno::before { content: ""; position: absolute; top: -2px; left: 0; width: 34px; height: 2px; background: var(--gold-base); }
+  .anno .pos { font-family: var(--font-display); font-weight: 800; font-size: 13px; color: var(--gold-base); letter-spacing: 0.1em; }
+  .anno .name { font-size: 13.5px; font-weight: 800; letter-spacing: 0.06em; color: var(--color-cream); margin: 4px 0 8px; text-transform: uppercase; }
+  .anno .why { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
+  .freq { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; }
+  .freq.daily { color: var(--gold-glow); background: rgba(251,191,36,0.1); }
+  .freq.weekly { color: var(--gold-highlight); background: rgba(185,154,107,0.12); }
+  .freq.occ { color: var(--text-secondary); background: rgba(255,255,255,0.05); }
+  .freq.util { color: var(--blue-system); background: rgba(59,130,246,0.1); }
+
+  /* ---------- value loop ---------- */
+  .loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; align-items: stretch; position: relative; }
+  .loop .lc { padding: 0 10px; display: flex; align-items: center; }
+  .loop .lnode { flex: 1; text-align: center; padding: 22px 14px; border-radius: 16px; border: 1px solid var(--border-card); background: var(--surface-card); position: relative; }
+  .loop .lnode .ic { width: 42px; height: 42px; margin: 0 auto 10px; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: rgba(185,154,107,0.1); color: var(--gold-highlight); }
+  .loop .lnode .v { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: 0.05em; }
+  .loop .lnode .d { font-size: 12px; color: var(--text-secondary); margin-top: 5px; }
+  .loop .arr { flex: none; width: 38px; color: var(--gold-base); display: flex; align-items: center; justify-content: center; }
+  .loop-back { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; font-size: 12.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-base); }
+  .loop-back svg { color: var(--gold-base); }
+
+  /* note card */
+  .note { display: flex; gap: 16px; margin-top: 26px; padding: 20px 24px; border-radius: 16px; border: 1px solid var(--line-gold-mid); background: rgba(185,154,107,0.05); }
+  .note .ni { width: 40px; height: 40px; flex: none; border-radius: 11px; display: flex; align-items: center; justify-content: center; background: rgba(251,191,36,0.12); color: var(--gold-glow); }
+  .note h4 { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: 0.03em; margin: 2px 0 6px; }
+  .note p { font-size: 14px; color: var(--text-secondary); margin: 0; }
+  .note p b { color: var(--gold-highlight); font-weight: 700; }
+
+  /* ---------- mobile section ---------- */
+  .mob-grid { display: grid; grid-template-columns: 320px 1fr; gap: 44px; align-items: start; }
+  .phone {
+    width: 300px; border-radius: 38px; padding: 14px; margin: 0 auto;
+    background: #0a0706; border: 1px solid var(--line-gold-mid);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.6), inset 0 0 0 6px rgba(0,0,0,0.5);
+  }
+  .phone .screen { border-radius: 26px; overflow: hidden; background: var(--bg-page); height: 592px; display: flex; flex-direction: column; position: relative; }
+  .ph-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 18px 10px; border-bottom: 1px solid var(--line-white-soft); }
+  .ph-logo { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.18em; color: var(--color-cream); }
+  .ph-logo em { font-style: normal; color: var(--gold-glow); }
+  .ph-logo svg { color: var(--gold-highlight); }
+  .ph-logo .home-hint { font-family: var(--font-body); font-size: 8px; font-weight: 800; letter-spacing: 0.1em; color: var(--gold-base); border: 1px solid var(--line-gold-mid); border-radius: 999px; padding: 1px 6px; }
+  .ph-av { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line-gold-mid); color: var(--gold-highlight); font-family: var(--font-display); font-weight: 700; font-size: 10px; display: flex; align-items: center; justify-content: center; background: rgba(185,154,107,0.08); }
+  .ph-status { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px 6px; font-size: 11px; font-weight: 700; color: var(--text-secondary); }
+  .ph-body { flex: 1; padding: 16px; overflow: hidden; }
+  .ph-hero-label { font-size: 10px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-base); }
+  .ph-balance { font-family: var(--font-display); font-weight: 800; font-size: 34px; color: var(--gold-highlight); letter-spacing: 0.01em; margin-top: 6px; }
+  .ph-sub { font-size: 12px; color: var(--green-success); margin-top: 2px; }
+  .ph-cardrow { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 16px; }
+  .ph-card { border: 1px solid var(--border-card); border-radius: 12px; padding: 12px; background: var(--surface-card); }
+  .ph-card .k { font-size: 9px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+  .ph-card .v { font-size: 16px; font-weight: 800; color: var(--color-cream); margin-top: 4px; }
+
+  .ph-tabbar { display: flex; align-items: flex-end; justify-content: space-around; padding: 10px 8px 16px; border-top: 1px solid var(--line-white-soft); background: rgba(7,5,4,0.96); }
+  .ph-tab { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; color: var(--text-secondary); position: relative; }
+  .ph-tab svg { width: 22px; height: 22px; }
+  .ph-tab span { font-size: 8.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  .ph-tab.active { color: var(--gold-highlight); }
+  .ph-tab.center { color: var(--color-ink); }
+  .ph-tab.center .fab { width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(140deg, var(--gold-highlight), var(--gold-base)); margin-top: -22px; box-shadow: 0 8px 20px rgba(185,154,107,0.4); }
+  .ph-tab.center .fab svg { width: 24px; height: 24px; }
+  .ph-tab.center span { color: var(--gold-highlight); margin-top: 2px; }
+
+  /* mobile tab legend */
+  .leg { display: flex; flex-direction: column; gap: 12px; }
+  .leg-item { display: grid; grid-template-columns: 30px 1fr; gap: 14px; align-items: start; padding: 14px 16px; border-radius: 13px; border: 1px solid var(--border-card); background: var(--surface-card); }
+  .leg-item .pos { font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--gold-base); text-align: center; }
+  .leg-item.hi { border-color: var(--line-gold-mid); background: linear-gradient(120deg, rgba(229,195,152,0.1), rgba(185,154,107,0.03)); }
+  .leg-item .name { font-size: 13.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-cream); }
+  .leg-item .why { font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
+
+  /* safety net steps */
+  .net { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .net-card { border: 1px solid var(--border-card); border-radius: 16px; padding: 20px; background: var(--surface-card); position: relative; }
+  .net-card .badge { position: absolute; top: -11px; left: 20px; width: 28px; height: 28px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: linear-gradient(140deg, var(--gold-glow), var(--gold-deep)); color: var(--color-ink); font-family: var(--font-display); font-weight: 800; font-size: 14px; }
+  .net-card h4 { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: 0.02em; margin: 10px 0 7px; }
+  .net-card p { font-size: 12.5px; color: var(--text-secondary); margin: 0; line-height: 1.55; }
+  .net-card .tagline { display: inline-block; margin-top: 12px; font-size: 10.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-glow); }
+
+  .legend-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .legend-row .lk { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
+
+  /* ---------- decision flow (entry logic) ---------- */
+  .flow { display: flex; flex-direction: column; align-items: center; }
+  .frow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .pill.cond { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 12px; border: 1px solid var(--line-white-soft); background: rgba(255,255,255,0.03); font-size: 13px; font-weight: 800; letter-spacing: 0.04em; color: var(--text-secondary); white-space: nowrap; }
+  .pill.cond.new { color: var(--gold-glow); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.06); }
+  .pill.cond.act { color: var(--gold-highlight); border-color: var(--line-gold-mid); background: rgba(185,154,107,0.05); }
+  .ha { color: var(--gold-base); display: flex; }
+  .hbox { padding: 16px 26px; border-radius: 14px; border: 1px solid var(--line-gold-mid); background: linear-gradient(120deg, rgba(185,154,107,0.12), rgba(185,154,107,0.02)); text-align: center; }
+  .hbox .hk { display: flex; align-items: center; gap: 9px; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: 0.08em; color: var(--color-cream); }
+  .hbox .hk svg { color: var(--gold-highlight); }
+  .hbox .hd { font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; }
+  .vline { width: 0; height: 36px; border-left: 1.6px solid var(--line-gold-mid); position: relative; }
+  .vline::after { content: ""; position: absolute; bottom: -1px; left: -4.5px; width: 0; height: 0; border-left: 4.5px solid transparent; border-right: 4.5px solid transparent; border-top: 7px solid var(--line-gold-mid); }
+  .vline[data-label] { height: 44px; }
+  .vline[data-label]::before { content: attr(data-label); position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-base); white-space: nowrap; }
+  .branchgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; width: 100%; max-width: 780px; }
+  .bcol { display: flex; flex-direction: column; align-items: center; }
+  .land.col { width: 100%; }
+  .feed { margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; color: var(--green-success); text-align: center; }
+  .home-note { margin-top: 30px; display: inline-flex; align-items: center; gap: 10px; padding: 11px 22px; border-radius: 999px; border: 1px dashed var(--line-gold-mid); color: var(--gold-highlight); font-size: 12.5px; font-weight: 700; letter-spacing: 0.03em; }
+  .home-note svg { color: var(--gold-base); }
+
+  /* nav caption + disabled states */
+  .nav-note { display: flex; align-items: center; gap: 9px; margin-top: 14px; font-size: 12.5px; color: var(--text-secondary); }
+  .nav-note svg { color: var(--gold-base); flex: none; }
+  .nav-note b { color: var(--gold-highlight); font-weight: 700; }
+  .ph-tab.off { opacity: 0.34; position: relative; }
+  .ph-tab.off .soon { position: absolute; top: -4px; left: 50%; transform: translateX(-50%); font-size: 7px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-base); white-space: nowrap; }
+  .leg-item.off { opacity: 0.62; border-style: dashed; }
+  .leg-item.off .pos { color: var(--text-secondary); }
+  .soon-tag { display: inline-block; margin-left: 7px; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-base); border: 1px solid var(--line-gold-mid); border-radius: 999px; padding: 1px 8px; vertical-align: middle; }
+
+  @media (max-width: 920px) {
+    .branchgrid { grid-template-columns: 1fr; gap: 20px; }
+    .topbar { padding: 14px 20px; }
+    .brand .tag { display: none; }
+    .wrap { padding: 32px 20px 80px; }
+    .split { grid-template-columns: 1fr; gap: 20px; }
+    .connector { display: none; }
+    .branches { gap: 16px; }
+    .annos { grid-template-columns: 1fr 1fr; }
+    .pcnav { overflow-x: auto; }
+    .loop { grid-template-columns: 1fr; }
+    .loop .lc { padding: 10px 0; }
+    .loop .arr { transform: rotate(90deg); width: 100%; height: 30px; }
+    .mob-grid { grid-template-columns: 1fr; }
+    .net { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <img src="brand/icon-gold.png" alt="LONGRISE">
+      <span class="wm">LONG<em>RISE</em></span>
+      <span class="tag">Menu Flow Map · MOT UX</span>
+    </div>
+    <div class="seg" role="tablist">
+      <button id="btn-pc" class="on" onclick="setView('pc')" role="tab">PC 뷰</button>
+      <button id="btn-mobile" onclick="setView('mobile')" role="tab">모바일 뷰</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+  <!-- ============================== PC ============================== -->
+  <section id="pc" class="view on" data-screen-label="PC Flow">
+    <div class="doc-head">
+      <div class="eyebrow">PC 뷰 · 상단 가로 내비게이션</div>
+      <h1>로그인 순간이 <span class="gold">메뉴의 첫 인상</span>을 결정한다</h1>
+      <p>비로그인 접근 시 <b style="color:var(--gold-highlight);font-weight:700">HOME(소개·장점)</b>이 먼저 보입니다. 로그인하면 신규는 START HERE, 패키지 보유 회원은 바로 DASHBOARD로 향합니다. <b style="color:var(--gold-highlight);font-weight:700">로고·홈 버튼</b>은 언제나 HOME으로 복귀합니다.</p>
+    </div>
+
+    <!-- stage 1 -->
+    <div class="stage">
+      <div class="stage-head">
+        <div class="stage-num">1</div>
+        <div>
+          <h2>진입 분기 — First MOT</h2>
+          <p class="sub">로그인 여부와 구매 이력에 따라 착지 페이지가 갈린다. HOME은 항상 그 위에 존재한다.</p>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="frow">
+          <div class="pill cond">비로그인 접근</div>
+          <div class="ha"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="hbox">
+            <div class="hk"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>HOME</div>
+            <div class="hd">프로젝트 소개 · 장점 강조</div>
+          </div>
+        </div>
+        <div class="vline" data-label="로그인"></div>
+        <div class="branchgrid">
+          <div class="bcol">
+            <div class="pill cond new"><span class="dot"></span>신규 · 구매이력 없음</div>
+            <div class="vline"></div>
+            <div class="land start col">
+              <div class="badge"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <div>
+                <div class="v">START HERE</div>
+                <div class="d">로그인 즉시 자동 라우팅 · 골드 펄스로 강조</div>
+              </div>
+            </div>
+          </div>
+          <div class="bcol">
+            <div class="pill cond act"><span class="dot"></span>활동 · 패키지 보유</div>
+            <div class="vline"></div>
+            <div class="land dash col">
+              <div class="badge"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
+              <div>
+                <div class="v">DASHBOARD</div>
+                <div class="d">수익 대시보드 · 로그인 기본 착지 · 최다 방문</div>
+              </div>
+            </div>
+            <div class="feed"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>자동 로그인 시 HOME 건너뛰고 바로 진입</div>
+          </div>
+        </div>
+        <div class="home-note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>로고 · 홈 버튼은 언제나 HOME(소개·장점)으로 복귀</div>
+      </div>
+    </div>
+
+    <!-- stage 2 -->
+    <div class="stage">
+      <div class="stage-head">
+        <div class="stage-num">2</div>
+        <div>
+          <h2>메뉴 순서 — 빈도 · 자금 흐름 정렬</h2>
+          <p class="sub">좌 → 우로 갈수록 사용 빈도가 낮아진다. START HERE는 우측 유틸로 물러난다.</p>
+        </div>
+      </div>
+      <div class="pcnav">
+        <div class="logo"><img src="brand/icon-gold.png" alt=""><span class="wm">LONG<em>RISE</em></span></div>
+        <div class="item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Dashboard</div>
+        <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/></svg>Packages</div>
+        <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M16 12h.01"/><path d="M2 10h20"/></svg>Wallet</div>
+        <div class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Rewards</div>
+        <div class="spacer"></div>
+        <div class="util">
+          <div class="item help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Start Here</div>
+          <div class="bal num">$38,344.72</div>
+          <div class="av">DP</div>
+        </div>
+      </div>
+      <div class="nav-note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span><b>LONGRISE 로고 = HOME</b>(소개·장점)으로 복귀 · START HERE는 우측 유틸에서 상시 접근</span></div>
+      <div class="annos">
+        <div class="anno">
+          <div class="pos">01</div>
+          <div class="name">Dashboard</div>
+          <div class="why">활동 회원의 매일 첫 MOT — "내 돈이 지금 얼마인가". 시선 시작점에 고정.</div>
+          <span class="freq daily">매일</span>
+        </div>
+        <div class="anno">
+          <div class="pos">02</div>
+          <div class="name">Packages</div>
+          <div class="why">수익이 시작되는 행동(매수). 루프의 진입 액션.</div>
+          <span class="freq weekly">주간</span>
+        </div>
+        <div class="anno">
+          <div class="pos">03</div>
+          <div class="name">Wallet</div>
+          <div class="why">입금(매수 재원)·출금(수익 실현). 추천보다 훨씬 잦아 앞으로 당김.</div>
+          <span class="freq weekly">주간</span>
+        </div>
+        <div class="anno">
+          <div class="pos">04</div>
+          <div class="name">Rewards</div>
+          <div class="why">추천·팀 보상. 가치는 크나 빈도는 간헐적 — 루프 확장 단계.</div>
+          <span class="freq occ">간헐</span>
+        </div>
+        <div class="anno">
+          <div class="pos">우측</div>
+          <div class="name">Start Here</div>
+          <div class="why">활동 회원에겐 가이드. 프로필·도움말 옆 유틸 영역에서 상시 접근.</div>
+          <span class="freq util">유틸</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- stage 3 -->
+    <div class="stage">
+      <div class="stage-head">
+        <div class="stage-num">3</div>
+        <div>
+          <h2>수익 루프 — 메뉴가 그리는 흐름</h2>
+          <p class="sub">START HERE가 가르치는 동선이 메뉴 순서에 그대로 박혀 있다.</p>
+        </div>
+      </div>
+      <div class="loop">
+        <div class="lc">
+          <div class="lnode">
+            <div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+            <div class="v">사기</div>
+            <div class="d">Packages 매수</div>
+          </div>
+          <div class="arr"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        </div>
+        <div class="lc">
+          <div class="lnode">
+            <div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></div>
+            <div class="v">불어남 확인</div>
+            <div class="d">Dashboard 추적</div>
+          </div>
+          <div class="arr"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        </div>
+        <div class="lc">
+          <div class="lnode">
+            <div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M16 12h.01"/></svg></div>
+            <div class="v">입출금</div>
+            <div class="d">Wallet 자금 이동</div>
+          </div>
+          <div class="arr"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+        </div>
+        <div class="lc">
+          <div class="lnode">
+            <div class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+            <div class="v">추천 확장</div>
+            <div class="d">Rewards 팀 성장</div>
+          </div>
+        </div>
+      </div>
+      <div class="loop-back">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        재투자 · 루프 반복 — 매 회전마다 복리
+      </div>
+    </div>
+
+    <!-- stage 4 -->
+    <div class="note">
+      <div class="ni"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div>
+        <h4>신규 회원일 때의 변형</h4>
+        <p>같은 메뉴 줄에서 <b>START HERE만 첫 번째 위치로 끌어올리고 골드 펄스로 강조</b>, Dashboard는 잠시 2번으로 내려갑니다. <b>첫 구매가 완료되는 순간</b> 자동으로 위 권장 순서로 전환 — 사용자는 메뉴가 "재배치"된 게 아니라 "할 일이 끝나 안내가 물러났다"고 느낍니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== MOBILE ============================== -->
+  <section id="mobile" class="view" data-screen-label="Mobile Flow">
+    <div class="doc-head">
+      <div class="eyebrow">모바일 뷰 · 하단 탭바</div>
+      <h1>슬롯은 5개, <span class="gold">엄지가 닿는 곳</span>이 곧 빈도다</h1>
+      <p>비로그인 접근 시 <b style="color:var(--gold-highlight);font-weight:700">HOME(소개)이 가장 먼저</b> 보입니다. 로그인하면 신규는 START HERE, 패키지 보유 회원은 바로 수익 DASHBOARD로 갑니다. 고빈도 자금 액션 WALLET을 <b style="color:var(--gold-highlight);font-weight:700">엄지 명당인 중앙</b>에, MARKET은 <b style="color:var(--gold-highlight);font-weight:700">초기 비활성</b>으로 둡니다.</p>
+    </div>
+
+    <!-- stage 1 -->
+    <div class="stage">
+      <div class="stage-head">
+        <div class="stage-num">1</div>
+        <div>
+          <h2>진입 분기 — First MOT</h2>
+          <p class="sub">비로그인 접근 시 HOME이 먼저 뜨고, 로그인 후 상태에 따라 갈린다.</p>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="frow">
+          <div class="pill cond">비로그인 접근</div>
+          <div class="ha"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="hbox">
+            <div class="hk"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>HOME</div>
+            <div class="hd">소개·장점 · 비로그인 시 가장 먼저 노출</div>
+          </div>
+        </div>
+        <div class="vline" data-label="로그인"></div>
+        <div class="branchgrid">
+          <div class="bcol">
+            <div class="pill cond new"><span class="dot"></span>신규 · 구매이력 없음</div>
+            <div class="vline"></div>
+            <div class="land start col">
+              <div class="badge"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <div>
+                <div class="v">START HERE</div>
+                <div class="d">로그인 즉시 해당 화면으로 자동 라우팅</div>
+              </div>
+            </div>
+          </div>
+          <div class="bcol">
+            <div class="pill cond act"><span class="dot"></span>활동 · 패키지 보유</div>
+            <div class="vline"></div>
+            <div class="land dash col">
+              <div class="badge"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></div>
+              <div>
+                <div class="v">DASHBOARD</div>
+                <div class="d">수익 대시보드 · 기본 착지 · 앱 홈베이스</div>
+              </div>
+            </div>
+            <div class="feed"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>자동 로그인 시 HOME 건너뛰고 바로 진입</div>
+          </div>
+        </div>
+        <div class="home-note"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>상단 로고 = HOME(소개·장점)으로 복귀</div>
+      </div>
+    </div>
+
+    <!-- stage 2 -->
+    <div class="stage">
+      <div class="stage-head">
+        <div class="stage-num">2</div>
+        <div>
+          <h2>하단 탭 순서 — 엄지 존 정렬</h2>
+          <p class="sub">WALLET은 중앙 엄지존으로. MARKET은 초기 비활성(추후 업데이트 노출).</p>
+        </div>
+      </div>
+      <div class="mob-grid">
+        <div class="phone">
+          <div class="screen">
+            <div class="ph-status"><span>9:41</span><span>● ▲ ▮</span></div>
+            <div class="ph-header">
+              <div class="ph-logo"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>LONG<em>RISE</em><span class="home-hint">= HOME</span></div>
+              <div class="ph-av">DP</div>
+            </div>
+            <div class="ph-body">
+              <div class="ph-hero-label">총 자산</div>
+              <div class="ph-balance num">$38,344.72</div>
+              <div class="ph-sub num">+$214.08 오늘 · +0.65%/일</div>
+              <div class="ph-cardrow">
+                <div class="ph-card"><div class="k">활성 패키지</div><div class="v num">3</div></div>
+                <div class="ph-card"><div class="k">누적 수익</div><div class="v num">$6.2K</div></div>
+                <div class="ph-card"><div class="k">출금 가능</div><div class="v num">$1.8K</div></div>
+                <div class="ph-card"><div class="k">팀 보너스</div><div class="v num">$420</div></div>
+              </div>
+            </div>
+            <div class="ph-tabbar">
+              <div class="ph-tab active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                <span>Dashboard</span>
+              </div>
+              <div class="ph-tab">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <span>Packages</span>
+              </div>
+              <div class="ph-tab center">
+                <div class="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M16 12h.01"/><path d="M2 10h20"/></svg></div>
+                <span>Wallet</span>
+              </div>
+              <div class="ph-tab">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                <span>Team</span>
+              </div>
+              <div class="ph-tab off">
+                <span class="soon">준비중</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span>Market</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="leg">
+          <div class="leg-item hi">
+            <div class="pos">1</div>
+            <div><div class="name">Dashboard</div><div class="why">기본 착지 · 최다 방문. 활동 회원의 수익 대시보드 = 앱 홈베이스. (HOME 소개는 상단 로고로 접근)</div></div>
+          </div>
+          <div class="leg-item">
+            <div class="pos">2</div>
+            <div><div class="name">Packages</div><div class="why">핵심 수익 행동(매수). 루프의 진입 액션. <em style="color:var(--gold-base);font-style:normal">(‘Invest’ → Packages로 통일)</em></div></div>
+          </div>
+          <div class="leg-item hi">
+            <div class="pos">3</div>
+            <div><div class="name">Wallet · 중앙</div><div class="why">입출금은 고의도·고빈도 액션 → 엄지가 가장 편한 중앙 슬롯에 올림.</div></div>
+          </div>
+          <div class="leg-item">
+            <div class="pos">4</div>
+            <div><div class="name">Team</div><div class="why">추천·팀 보상, 간헐적.</div></div>
+          </div>
+          <div class="leg-item off">
+            <div class="pos">5</div>
+            <div><div class="name">Market<span class="soon-tag">준비중</span></div><div class="why">시세 열람 = 수동적·저빈도. 초기엔 비활성화하고 추후 업데이트 시 노출.</div></div>
+          </div>
+          <div class="legend-row">
+            <span class="lk"><span class="freq daily" style="margin:0">매일</span> Dashboard · Wallet</span>
+            <span class="lk"><span class="freq weekly" style="margin:0">주간</span> Packages</span>
+            <span class="lk"><span class="freq occ" style="margin:0">간헐</span> Team</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- stage 3 -->
+    <div class="stage">
+      <div class="stage-head">
+        <div class="stage-num">3</div>
+        <div>
+          <h2>START HERE — 3중 안전망</h2>
+          <p class="sub">탭 슬롯을 쓰지 않고도 신규 회원이 절대 놓치지 않도록.</p>
+        </div>
+      </div>
+      <div class="net">
+        <div class="net-card">
+          <div class="badge">1</div>
+          <h4>로그인 자동 라우팅</h4>
+          <p>구매이력이 없는 신규는 로그인 즉시 START HERE 화면으로 보낸다. 첫 MOT를 온보딩에 고정.</p>
+          <span class="tagline">신규 로그인 시</span>
+        </div>
+        <div class="net-card">
+          <div class="badge">2</div>
+          <h4>고정 배너</h4>
+          <p>완료 전까지 DASHBOARD 상단에 "START HERE" 배너가 고정되어 다음 행동을 계속 안내.</p>
+          <span class="tagline">완료 전까지</span>
+        </div>
+        <div class="net-card">
+          <div class="badge">3</div>
+          <h4>MY 안 가이드</h4>
+          <p>첫 매수 완료 시 배너가 사라지고 평소 수익 DASHBOARD로 전환. 이후 가이드는 프로필(MY)에만 상주.</p>
+          <span class="tagline">활동 회원 전환 후</span>
+        </div>
+      </div>
+      <div class="note">
+        <div class="ni"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></div>
+        <div>
+          <h4>모바일 동선 요약</h4>
+          <p><b>신규</b>: 로그인 → START HERE 자동 라우팅 → Packages 유도 매수 → 중앙 Wallet 입금 → 완료 → 배너 사라짐. &nbsp;·&nbsp; <b>활동</b>: DASHBOARD(수익) → 엄지로 중앙 Wallet 입·출금 한 손에 → Packages 재투자 → Team은 가끔. &nbsp;·&nbsp; 언제든 상단 로고 = HOME 복귀.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div>
+
+<script>
+  function setView(v) {
+    document.getElementById('pc').classList.toggle('on', v === 'pc');
+    document.getElementById('mobile').classList.toggle('on', v === 'mobile');
+    document.getElementById('btn-pc').classList.toggle('on', v === 'pc');
+    document.getElementById('btn-mobile').classList.toggle('on', v === 'mobile');
+    try { localStorage.setItem('lr_flowmap_view', v); } catch (e) {}
+    window.scrollTo({ top: 0 });
+  }
+  (function () {
+    var v = 'pc';
+    try { v = localStorage.getItem('lr_flowmap_view') || 'pc'; } catch (e) {}
+    setView(v);
+  })();
+</script>
+</body>
+</html>

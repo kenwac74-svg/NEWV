@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LONGRISE — 용어집 / Glossary</title>
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/colors.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/typography.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/styles.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(85% 50% at 75% -6%, #160f0c 0%, var(--color-ink) 58%), var(--color-ink);
+    color: var(--text-primary); font-family: var(--font-body); font-size: 15px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 52px 40px 90px; }
+  .eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-base); }
+  h1 { font-family: var(--font-display); font-weight: 800; font-size: 40px; letter-spacing: 0.01em; margin: 12px 0 10px; }
+  .lede { font-size: 16px; color: var(--text-secondary); max-width: 760px; margin: 0 0 8px; }
+  .gold { color: var(--gold-highlight); }
+  h2 { font-family: var(--font-display); font-weight: 700; font-size: 21px; letter-spacing: 0.03em; margin: 46px 0 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line-gold-soft); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th { text-align: left; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-base);
+    padding: 10px 14px; border-bottom: 1px solid var(--line-gold-mid); white-space: nowrap; }
+  tbody td { padding: 13px 14px; border-bottom: 1px solid var(--line-white-soft); vertical-align: top; }
+  tbody tr:hover { background: rgba(185,154,107,0.04); }
+  .old { color: var(--text-secondary); text-decoration: line-through; text-decoration-color: var(--red-mid); }
+  .new { color: var(--gold-highlight); font-weight: 800; }
+  .arrow { color: var(--gold-base); padding: 0 2px; }
+  code { font-family: var(--font-mono); font-size: 12px; color: var(--color-cream); background: rgba(255,255,255,0.05); border: 1px solid var(--line-white-soft); border-radius: 6px; padding: 1px 7px; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 999px; padding: 2px 9px; }
+  .tag.mob { color: var(--gold-glow); border: 1px solid rgba(251,191,36,0.4); }
+  .tag.pc { color: var(--blue-system); border: 1px solid rgba(59,130,246,0.4); }
+  .tag.soon { color: var(--text-secondary); border: 1px dashed var(--line-gold-mid); }
+  .note { display: flex; gap: 14px; margin-top: 22px; padding: 18px 22px; border-radius: 14px; border: 1px solid var(--line-gold-mid); background: rgba(185,154,107,0.05); }
+  .note b { color: var(--gold-highlight); }
+  .note p { margin: 0; font-size: 13.5px; color: var(--text-secondary); }
+  ul.plain { margin: 10px 0 0; padding-left: 20px; color: var(--text-secondary); font-size: 13.5px; }
+  ul.plain li { margin-bottom: 6px; }
+  .muted { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="eyebrow">Developer handoff · 용어집</div>
+    <h1>LONGRISE <span class="gold">메뉴 용어집</span></h1>
+    <p class="lede">용어 통일은 추후 일괄 진행됩니다. 그 전까지 개발자가 혼선을 겪지 않도록 <b class="gold">구 용어 → 신 용어</b> 매핑을 정리합니다. 내부 라우트 키·컴포넌트 이름은 변경하지 않아 코드 영향이 최소화됩니다 — <b>표시 라벨만</b> 바뀝니다.</p>
+
+    <h2>1. 핵심 메뉴 매핑</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>개념</th>
+          <th>구 용어</th>
+          <th></th>
+          <th>신 용어 (표시)</th>
+          <th>플랫폼별 라벨</th>
+          <th>내부 키 / 컴포넌트</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>패키지 카탈로그<br><span class="muted">상품 구매</span></td>
+          <td><span class="old">INVEST / Invest</span></td>
+          <td class="arrow">→</td>
+          <td><span class="new">PLANS</span></td>
+          <td><span class="tag mob">모바일 Plans</span> <span class="tag pc">PC Packages</span></td>
+          <td><code>key: PLANS</code><br><code>InvestScreen</code></td>
+        </tr>
+        <tr>
+          <td>추천·팀<br><span class="muted">마케팅·기여 유도</span></td>
+          <td><span class="old">TEAM / Team</span></td>
+          <td class="arrow">→</td>
+          <td><span class="new">NETWORK</span></td>
+          <td><span class="tag mob">모바일 Network</span> <span class="tag pc">PC Rewards</span></td>
+          <td><code>key: NETWORK</code><br><code>TeamScreen</code></td>
+        </tr>
+        <tr>
+          <td>수익 대시보드<br><span class="muted">자산·수익 확인</span></td>
+          <td><span class="old">HOME (dashboard)</span></td>
+          <td class="arrow">→</td>
+          <td><span class="new">EARN</span></td>
+          <td><span class="tag mob">모바일 Earn</span> <span class="tag pc">PC Dashboard</span></td>
+          <td><code>key: EARN</code><br><code>HomeScreen</code></td>
+        </tr>
+        <tr>
+          <td>지갑<br><span class="muted">입출금·송금·스왑</span></td>
+          <td><span class="muted">WALLET</span></td>
+          <td class="arrow">=</td>
+          <td><span class="new">WALLET</span></td>
+          <td><span class="tag mob">모바일 Wallet</span> <span class="tag pc">PC Wallet</span></td>
+          <td><code>key: WALLET</code><br><code>WalletScreen</code></td>
+        </tr>
+        <tr>
+          <td>전체 메뉴 허브<br><span class="muted">모든 핫링크</span></td>
+          <td><span class="muted">— (신규)</span></td>
+          <td class="arrow">+</td>
+          <td><span class="new">ALL (전체)</span></td>
+          <td><span class="tag mob">모바일 All</span> <span class="tag pc">PC Sitemap</span></td>
+          <td><code>key: ALL</code><br><code>AllScreen</code></td>
+        </tr>
+        <tr>
+          <td>P2P 마켓<br><span class="muted">시세·거래</span></td>
+          <td><span class="muted">MARKET</span></td>
+          <td class="arrow">→</td>
+          <td><span class="new">Market</span> <span class="tag soon">초기 비활성</span></td>
+          <td><span class="muted">하단 탭에서 제외 · 추후 노출</span></td>
+          <td><code>MarketScreen</code><br><span class="muted">(라우트 유지)</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <div>
+        <p><b>PC ↔ 모바일은 1:1 매칭이 아닙니다.</b> 동일 개념이라도 라벨이 다릅니다 — PC <code>Packages</code> = 모바일 <code>Plans</code> = 내부 <code>PLANS</code>, PC <code>Rewards</code> = 모바일 <code>Network</code> = 내부 <code>NETWORK</code>, PC <code>Dashboard</code> = 모바일 <code>Earn</code> = 내부 <code>EARN</code>. 개발 시에는 라벨이 아닌 <b>내부 키</b>를 기준으로 분기하세요.</p>
+      </div>
+    </div>
+
+    <h2>2. 모바일 하단 네비게이션 순서</h2>
+    <p class="lede"><code>PLANS</code> → <code>NETWORK</code> → <code>EARN</code> → <code>WALLET</code> → <code>ALL(전체)</code> · 기본 착지 = <span class="gold">EARN</span>. 사이드바/드로어는 사용하지 않고 <code>ALL</code> 탭이 전체 핫링크 허브를 대체합니다. PC에서는 <code>ALL</code> 대신 <b>Sitemap 페이지</b> (푸터 + 로그인 아이콘 서브메뉴의 로그아웃 바로 위)로 제공합니다.</p>
+
+    <h2>3. 로그인 직후 오버레이 순서</h2>
+    <ul class="plain">
+      <li><b class="gold">① 동의 게이트 (매 로그인)</b> — Risk Notice + Terms 2단 박스, 각각 개별 동의. 내용이 길면 스크롤(전부 내릴 필요 없음), 장식 없는 텍스트. 둘 다 체크해야 진행.</li>
+      <li><b class="gold">② 중요 공지 팝업 (선택)</b> — <code>LR_DATA.importantNotice</code>가 있을 때만 1개 더 표시. 없으면 생략.</li>
+      <li><b class="gold">③ Start Here 유도 (신규/미구매)</b> — 구매 이력 없는 사용자에게만 표시, Start Here 페이지로 유도.</li>
+    </ul>
+    <div class="note">
+      <div>
+        <p><b>데모 토글</b> — Tweaks 패널에서 <code>User: new / active</code>, <code>Important notice popup</code> on/off, <code>Replay login flow</code>로 시퀀스를 재현할 수 있습니다. 실제 구현에서는 <code>user.hasPurchased</code> 등 계정 상태로 ③ 노출을 분기하세요.</p>
+      </div>
+    </div>
+
+    <h2>4. EARN(대시보드) 액션 정리</h2>
+    <ul class="plain">
+      <li>EARN 페이지에서 <span class="old">Deposit / Withdraw / Send / Swap</span> 제거 — Wallet과 중복이므로 Wallet으로 일원화.</li>
+      <li>대신 <b>보유 패키지 목록</b>(패키지별 수익·수익률·진행률)을 표시.</li>
+      <li>단일 <b class="gold">Get more Profit</b> 버튼 → <code>PLANS</code> 이동.</li>
+    </ul>
+
+    <h2>5. START HERE 처리</h2>
+    <ul class="plain">
+      <li>고정 메뉴가 아님 — 모바일·PC 모두 <b>홈(EARN) 상단 배너</b>로 노출, <code>START HERE.html</code>로 링크.</li>
+      <li>모바일 신규/미구매 사용자: 로그인 노티 팝업 이후 ③ Start Here 유도 팝업으로 진입.</li>
+    </ul>
+
+    <p class="muted" style="margin-top:46px; font-size:12px; text-align:center;">LONGRISE · 정적 디자인 프리뷰 · 용어 통일 전 임시 매핑 기준</p>
+  </div>
+</body>
+</html>

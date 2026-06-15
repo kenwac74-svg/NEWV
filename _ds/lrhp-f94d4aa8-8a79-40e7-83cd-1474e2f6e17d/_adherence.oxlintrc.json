@@ -1,0 +1,194 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "AIHP-update/assets/js/**",
+              "assets/js/**",
+              "github-upload/assets/js/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Cinzel|Inter|JetBrains Mono))/i]",
+        "message": "Font not provided by the design system. Available: Cinzel, Inter, JetBrains Mono."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {},
+    "tokens": [
+      "--accent",
+      "--accent-base",
+      "--bg-page",
+      "--blue-system",
+      "--border-card",
+      "--color-black",
+      "--color-cream",
+      "--color-ink",
+      "--color-muted",
+      "--color-panel",
+      "--color-void",
+      "--font-body",
+      "--font-display",
+      "--font-mono",
+      "--glow-card-inner",
+      "--gold-base",
+      "--gold-deep",
+      "--gold-glow",
+      "--gold-highlight",
+      "--green-success",
+      "--line-gold-mid",
+      "--line-gold-soft",
+      "--line-white-soft",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-pill",
+      "--radius-sm",
+      "--radius-xl",
+      "--red-alert",
+      "--red-bright",
+      "--red-deep",
+      "--red-mid",
+      "--shadow-card",
+      "--shadow-glow-gold",
+      "--shadow-glow-red",
+      "--shadow-panel",
+      "--space-1",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-7",
+      "--space-8",
+      "--surface-card",
+      "--surface-void",
+      "--text-body",
+      "--text-display",
+      "--text-h2",
+      "--text-h3",
+      "--text-label",
+      "--text-mono",
+      "--text-primary",
+      "--text-secondary",
+      "--text-small",
+      "--tracking-brand",
+      "--tracking-caps",
+      "--tracking-display",
+      "--tracking-wide",
+      "--weight-black",
+      "--weight-bold",
+      "--weight-medium",
+      "--weight-regular",
+      "--weight-semibold"
+    ],
+    "tokenKinds": {
+      "--color-black": "color",
+      "--color-void": "color",
+      "--color-panel": "color",
+      "--color-ink": "color",
+      "--color-cream": "color",
+      "--color-muted": "color",
+      "--gold-base": "color",
+      "--gold-highlight": "color",
+      "--gold-glow": "color",
+      "--gold-deep": "color",
+      "--red-deep": "color",
+      "--red-mid": "color",
+      "--red-bright": "color",
+      "--red-alert": "color",
+      "--blue-system": "color",
+      "--green-success": "color",
+      "--line-gold-soft": "color",
+      "--line-gold-mid": "color",
+      "--line-white-soft": "color",
+      "--bg-page": "color",
+      "--surface-card": "color",
+      "--surface-void": "color",
+      "--text-primary": "font",
+      "--text-secondary": "font",
+      "--accent": "color",
+      "--accent-base": "color",
+      "--border-card": "color",
+      "--font-display": "font",
+      "--font-body": "font",
+      "--font-mono": "font",
+      "--text-display": "font",
+      "--text-h2": "font",
+      "--text-h3": "font",
+      "--text-body": "font",
+      "--text-small": "font",
+      "--text-label": "font",
+      "--text-mono": "font",
+      "--weight-regular": "other",
+      "--weight-medium": "other",
+      "--weight-semibold": "other",
+      "--weight-bold": "other",
+      "--weight-black": "other",
+      "--tracking-display": "other",
+      "--tracking-caps": "other",
+      "--tracking-wide": "other",
+      "--tracking-brand": "other",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-7": "spacing",
+      "--space-8": "spacing",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-xl": "radius",
+      "--radius-pill": "radius",
+      "--shadow-card": "shadow",
+      "--shadow-panel": "shadow",
+      "--shadow-glow-gold": "shadow",
+      "--shadow-glow-red": "shadow",
+      "--glow-card-inner": "color"
+    },
+    "fontFamilies": [
+      "Cinzel",
+      "Inter",
+      "JetBrains Mono"
+    ]
+  }
+}

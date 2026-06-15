@@ -1,0 +1,6 @@
+/* LONGRISE Design System — global entry point.
+   Consumers link this single file. It @imports the token closure only;
+   product-specific CSS (assets/css/*) is loaded by its own pages. */
+@import "tokens/colors.css";
+@import "tokens/typography.css";
+@import "tokens/spacing.css";

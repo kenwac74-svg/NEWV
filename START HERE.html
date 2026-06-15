@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>START HERE — LONGRISE</title>
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/colors.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/typography.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/styles.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(80% 50% at 70% -5%, #160f0c 0%, var(--color-ink) 55%),
+      var(--color-ink);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+  .gold {
+    background: linear-gradient(115deg, var(--gold-highlight) 8%, var(--gold-base) 52%, var(--gold-glow) 96%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-base); }
+
+  /* top nav (mirrors server app desktop nav) */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    height: 78px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; gap: 24px;
+    background: rgba(7,5,4,0.86); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-white-soft);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { height: 36px; }
+  .brand .wm { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: 0.26em; color: var(--color-cream); }
+  .brand .wm em { font-style: normal; color: var(--gold-glow); }
+  .nav-links { display: flex; align-items: center; gap: 6px; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-secondary);
+    font-size: 13px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 11px 18px; border-radius: 10px; border: 1.5px solid transparent;
+    transition: color .15s, border-color .15s, background .15s;
+  }
+  .nav-links a:hover { color: var(--color-cream); border-color: var(--line-gold-soft); }
+  .nav-links a.active { color: var(--gold-highlight); border-color: var(--line-gold-mid); background: rgba(185,154,107,0.08); }
+  .nav-right { display: flex; align-items: center; gap: 14px; }
+  .bal-pill {
+    display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px;
+    border: 1px solid var(--line-gold-mid); background: rgba(185,154,107,0.07);
+  }
+  .bal-pill .k { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+  .bal-pill .v { font-size: 16px; font-weight: 800; color: var(--gold-highlight); }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line-gold-mid); background: linear-gradient(140deg, rgba(185,154,107,0.3), rgba(185,154,107,0.06)); color: var(--gold-highlight); font-family: var(--font-display); font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 48px 40px 80px; }
+
+  /* hero */
+  .hero { text-align: center; margin-bottom: 14px; }
+  .hero h1 { font-family: var(--font-display); font-weight: 800; font-size: 52px; line-height: 1.08; letter-spacing: 0.01em; margin: 14px 0 12px; }
+  .hero p { font-size: 19px; color: var(--text-secondary); margin: 0 auto; max-width: 640px; }
+
+  /* loop indicator */
+  .loop { display: flex; align-items: center; justify-content: center; gap: 0; margin: 30px 0 8px; }
+  .loop .node { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+  .loop .dot {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--line-gold-mid); background: var(--surface-void);
+    font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--gold-highlight);
+  }
+  .loop .node span { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); }
+  .loop .link { width: 64px; height: 2px; background: linear-gradient(90deg, var(--line-gold-mid), var(--line-gold-soft)); margin: 0 6px 26px; }
+  .loop .repeat { margin: 0 0 26px 14px; color: var(--gold-base); display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; }
+
+  /* step rows */
+  .steps { display: flex; flex-direction: column; gap: 20px; margin-top: 40px; }
+  .step {
+    display: grid; grid-template-columns: 80px 1fr 320px; gap: 28px; align-items: stretch;
+    background-color: var(--surface-card); background-image: var(--glow-card-inner);
+    border: 1px solid var(--border-card); border-radius: 22px; padding: 30px 32px;
+  }
+  .step.feature { border-color: var(--line-gold-mid); box-shadow: var(--shadow-card); }
+  .step .idx {
+    width: 64px; height: 64px; border-radius: 18px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(140deg, var(--gold-highlight), var(--gold-base) 60%, var(--gold-deep));
+    color: var(--color-ink); font-family: var(--font-display); font-weight: 800; font-size: 28px;
+  }
+  .step .body h3 { font-family: var(--font-display); font-weight: 700; font-size: 27px; letter-spacing: 0.02em; margin: 2px 0 8px; }
+  .step .body p { font-size: 17px; color: var(--text-secondary); margin: 0 0 16px; max-width: 560px; }
+
+  /* bonus chips (step 1) */
+  .bonuses { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px; }
+  .bonus {
+    border: 1px solid var(--line-gold-soft); border-radius: 14px; padding: 16px;
+    background: var(--surface-void);
+  }
+  .bonus .bt { font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: 0.04em; color: var(--gold-highlight); margin-bottom: 6px; }
+  .bonus .bd { font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; }
+
+  /* hotlink card (right column) */
+  .hot { display: flex; flex-direction: column; justify-content: center; gap: 12px; border-left: 1px solid var(--line-white-soft); padding-left: 28px; }
+  .hot .ht { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-secondary); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: space-between; gap: 12px;
+    text-decoration: none; cursor: pointer; border: 0;
+    min-height: 58px; padding: 0 24px; border-radius: 14px;
+    font-family: var(--font-body); font-size: 16px; font-weight: 800; letter-spacing: 0.04em;
+    transition: transform .12s, box-shadow .18s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn .arrow { font-size: 20px; }
+  .btn.gold { background: linear-gradient(125deg, var(--gold-highlight), var(--gold-base) 60%, var(--gold-deep)); color: var(--color-ink); box-shadow: var(--shadow-glow-gold); }
+  .btn.ghost { background: var(--surface-void); border: 1px solid var(--line-gold-mid); color: var(--color-cream); }
+  .btn.block { width: 100%; }
+
+  /* repeat footer */
+  .loopfoot {
+    margin-top: 34px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    border: 1px dashed var(--line-gold-mid); border-radius: 22px; padding: 26px 32px;
+    background: radial-gradient(120% 120% at 0% 0%, rgba(185,154,107,0.08), transparent 60%);
+  }
+  .loopfoot .lf-t { display: flex; align-items: center; gap: 14px; }
+  .loopfoot .lf-ic { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-gold-mid); display: flex; align-items: center; justify-content: center; color: var(--gold-highlight); flex: none; }
+  .loopfoot h4 { font-family: var(--font-display); font-size: 21px; font-weight: 700; margin: 0 0 3px; }
+  .loopfoot p { margin: 0; color: var(--text-secondary); font-size: 15px; }
+
+  /* floating CS — PC */
+  .cs-float {
+    position: fixed; right: 28px; bottom: 28px; z-index: 40;
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; padding: 0; border-radius: 50%;
+    background: linear-gradient(125deg, var(--gold-highlight), var(--gold-base) 60%, var(--gold-deep));
+    color: var(--color-ink); border: 0; cursor: pointer;
+    box-shadow: var(--shadow-glow-gold); text-decoration: none;
+  }
+  svg { display: block; }
+
+  /* responsive fallback so the spec is reviewable at any width (PC layout stays 3-col wide) */
+  @media (max-width: 1000px) {
+    .wrap { padding: 32px 22px 72px; }
+    .nav { padding: 0 20px; gap: 14px; overflow-x: auto; }
+    .nav-links { display: none; }
+    .bal-pill { display: none; }
+    .hero h1 { font-size: 34px; }
+    .hero p { font-size: 17px; }
+    .loop .link { width: 30px; }
+    .loop .repeat { margin-left: 8px; }
+    .step { grid-template-columns: 56px 1fr; gap: 18px; padding: 24px; }
+    .step .idx { width: 56px; height: 56px; font-size: 24px; }
+    .bonuses { grid-template-columns: 1fr; }
+    .hot { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line-white-soft); padding-left: 0; padding-top: 20px; margin-top: 4px; }
+    .loopfoot { flex-direction: column; align-items: flex-start; }
+    .cs-float { right: 18px; bottom: 18px; }
+  }
+  @media (max-width: 540px) {
+    .hero h1 { font-size: 28px; }
+    .step .body h3 { font-size: 23px; }
+  }
+</style>
+</head>
+<body>
+  <template id="__bundler_thumbnail" data-bg-color="#070504">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#070504"></rect>
+      <circle cx="430" cy="400" r="46" fill="none" stroke="#b99a6b" stroke-width="9"></circle>
+      <circle cx="600" cy="400" r="46" fill="none" stroke="#b99a6b" stroke-width="9"></circle>
+      <circle cx="770" cy="400" r="46" fill="none" stroke="#e5c398" stroke-width="9"></circle>
+      <line x1="476" y1="400" x2="554" y2="400" stroke="#b99a6b" stroke-width="6"></line>
+      <line x1="646" y1="400" x2="724" y2="400" stroke="#b99a6b" stroke-width="6"></line>
+      <text x="600" y="300" text-anchor="middle" font-family="Georgia, serif" font-size="80" font-weight="700" fill="#e5c398">START</text>
+    </svg>
+  </template>
+  <!-- top nav (server app desktop shell, CRYPTO AI → START HERE) -->
+  <nav class="nav">
+    <div class="brand">
+      <img src="brand/icon-gold.png" alt="LONGRISE">
+      <span class="wm">LONG<em>RISE</em></span>
+    </div>
+    <div class="nav-links">
+      <a href="#" class="active">START HERE</a>
+      <a href="#">PACKAGES</a>
+      <a href="#">REWARDS</a>
+      <a href="#">WALLET</a>
+    </div>
+    <div class="nav-right">
+      <div class="bal-pill"><span class="k">Total</span><span class="v num">$38,344.72</span></div>
+      <div class="avatar">DP</div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <!-- hero -->
+    <div class="hero">
+      <div class="eyebrow">Start Here · New here?</div>
+      <h1>Follow this page.<br><span class="gold">You'll master LongRise in 3 minutes.</span></h1>
+      <p>Just follow the steps below, top to bottom — and keep repeating the loop to grow your earnings.</p>
+
+      <div class="loop">
+        <div class="node"><div class="dot">1</div><span>Start</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="dot">2</div><span>Earn</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="dot">3</div><span>Grow</span></div>
+        <div class="link"></div>
+        <div class="node"><div class="dot">4</div><span>Repeat</span></div>
+        <div class="repeat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0115.5-6.3L21 8M21 3v5h-5M21 12a9 9 0 01-15.5 6.3L3 16M3 21v-5h5"/></svg>
+          loop
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <!-- STEP 1 -->
+      <div class="step feature">
+        <div class="idx">1</div>
+        <div class="body">
+          <div class="eyebrow">Understand &amp; Start</div>
+          <h3>Buy a Package</h3>
+          <p>The AI auto-betting engine earns you daily dividends. But it doesn't stop there — you also earn by helping LongRise grow:</p>
+          <div class="bonuses">
+            <div class="bonus"><div class="bt">Winning Dividend</div><div class="bd">Daily ROI paid from the AI engine — every day, automatically.</div></div>
+            <div class="bonus"><div class="bt">Referral + Roll-up</div><div class="bd">Invite others &amp; earn from your team's activity through roll-up.</div></div>
+            <div class="bonus"><div class="bt">Rank Bonus</div><div class="bd">As your organization grows, your rank unlocks bigger bonuses.</div></div>
+          </div>
+        </div>
+        <div class="hot">
+          <div class="ht">Do this now</div>
+          <a href="#" class="btn gold block">Buy a Package <span class="arrow">→</span></a>
+          <a href="#" class="btn ghost block">See how ROI works <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step">
+        <div class="idx">2</div>
+        <div class="body">
+          <div class="eyebrow">Stay motivated</div>
+          <h3>Check Your Earnings</h3>
+          <p>Watch your daily dividends and bonuses stack up. Seeing the numbers grow every day is what keeps you going.</p>
+        </div>
+        <div class="hot">
+          <div class="ht">Do this now</div>
+          <a href="#" class="btn gold block">View Earnings <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step">
+        <div class="idx">3</div>
+        <div class="body">
+          <div class="eyebrow">Multiply rewards</div>
+          <h3>Grow Your Organization</h3>
+          <p>Refer others and build your team. Roll-up grows your bonuses as your network expands — and pushes you toward the next rank.</p>
+        </div>
+        <div class="hot">
+          <div class="ht">Do this now</div>
+          <a href="#" class="btn gold block">Refer Now <span class="arrow">→</span></a>
+          <a href="#" class="btn ghost block">My Team &amp; Tree <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step">
+        <div class="idx">4</div>
+        <div class="body">
+          <div class="eyebrow">Keep the loop going</div>
+          <h3>Deposit &amp; Withdraw</h3>
+          <p>Add funds to grow your position, and withdraw what you've earned anytime. Then start again from Step 1 — every loop compounds.</p>
+        </div>
+        <div class="hot">
+          <div class="ht">Do this now</div>
+          <a href="#" class="btn gold block">Deposit <span class="arrow">→</span></a>
+          <a href="#" class="btn ghost block">Withdraw <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- repeat footer -->
+    <div class="loopfoot">
+      <div class="lf-t">
+        <div class="lf-ic">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0115.5-6.3L21 8M21 3v5h-5M21 12a9 9 0 01-15.5 6.3L3 16M3 21v-5h5"/></svg>
+        </div>
+        <div>
+          <h4>The more you repeat this loop, the more you earn.</h4>
+          <p>Buy → Earn → Grow → Reinvest. Stuck on any step? Our team will walk you through it.</p>
+        </div>
+      </div>
+      <a href="#" class="btn ghost">Talk to Support <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <a href="#" class="cs-float" aria-label="Support">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 10-9-9M12 17v.01M9.5 9.5a2.5 2.5 0 114 2c-.8.6-1.5 1-1.5 2"/></svg>
+  </a>
+</body>
+</html>

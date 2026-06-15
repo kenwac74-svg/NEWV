@@ -1,0 +1,44 @@
+/* LONGRISE — Color tokens
+   Dark-cinematic casino aesthetic: deep black/void, base→glow gold, signal red. */
+:root{
+  /* ---- Base surfaces ---- */
+  --color-black:#070504;      /* pure black background */
+  --color-void:#0f0a09;       /* void / deep brown */
+  --color-panel:#150f0d;      /* dark panel */
+  --color-ink:#000000;        /* true black (nav, footer) */
+
+  /* ---- Text ---- */
+  --color-cream:#fcfaf7;      /* cream / white */
+  --color-muted:#a79c93;      /* muted brown */
+
+  /* ---- Gold accents ---- */
+  --gold-base:#b99a6b;        /* base gold */
+  --gold-highlight:#e5c398;   /* highlight gold */
+  --gold-glow:#fbbf24;        /* glow gold */
+  --gold-deep:#d97706;        /* deep gold (gradients) */
+
+  /* ---- Red (signal / casino) ---- */
+  --red-deep:#450a0a;
+  --red-mid:#7f1d1d;
+  --red-bright:#dc2626;
+  --red-alert:#ef4444;        /* alert red */
+
+  /* ---- Status ---- */
+  --blue-system:#3b82f6;      /* system blue */
+  --green-success:#10b981;    /* success green */
+
+  /* ---- Hairlines / borders ---- */
+  --line-gold-soft:rgba(185,154,107,0.15);
+  --line-gold-mid:rgba(185,154,107,0.28);
+  --line-white-soft:rgba(255,255,255,0.07);
+
+  /* ---- Semantic aliases ---- */
+  --bg-page:#070504;
+  --surface-card:#150f0d;
+  --surface-void:#0f0a09;
+  --text-primary:#fcfaf7;
+  --text-secondary:#a79c93;
+  --accent:#fbbf24;
+  --accent-base:#b99a6b;
+  --border-card:rgba(185,154,107,0.15);
+}

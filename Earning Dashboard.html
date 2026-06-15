@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — LONGRISE</title>
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/colors.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/typography.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/lrhp-f94d4aa8-8a79-40e7-83cd-1474e2f6e17d/styles.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(80% 50% at 70% -5%, #160f0c 0%, var(--color-ink) 55%), var(--color-ink);
+    color: var(--text-primary); font-family: var(--font-body); font-size: 17px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+  .num { font-variant-numeric: tabular-nums; }
+  .gold { background: linear-gradient(115deg, var(--gold-highlight) 8%, var(--gold-base) 52%, var(--gold-glow) 96%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .green { color: var(--green-success); }
+  .muted { color: var(--text-secondary); }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-base); }
+  svg { display: block; }
+
+  /* top nav */
+  .nav { position: sticky; top: 0; z-index: 20; height: 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; gap: 24px; background: rgba(7,5,4,0.86); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line-white-soft); }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { height: 34px; }
+  .brand .wm { font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: 0.26em; color: var(--color-cream); }
+  .brand .wm em { font-style: normal; color: var(--gold-glow); }
+  .nav-links { display: flex; align-items: center; gap: 6px; }
+  .nav-links a { text-decoration: none; color: var(--text-secondary); font-size: 13px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; padding: 11px 18px; border-radius: 10px; border: 1.5px solid transparent; transition: color .15s, border-color .15s, background .15s; }
+  .nav-links a:hover { color: var(--color-cream); border-color: var(--line-gold-soft); }
+  .nav-links a.active { color: var(--gold-highlight); border-color: var(--line-gold-mid); background: rgba(185,154,107,0.08); }
+  .nav-right { display: flex; align-items: center; gap: 14px; }
+  .bal-pill { display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line-gold-mid); background: rgba(185,154,107,0.07); }
+  .bal-pill .k { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+  .bal-pill .v { font-size: 16px; font-weight: 800; color: var(--gold-highlight); }
+  .avatar { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line-gold-mid); background: linear-gradient(140deg, rgba(185,154,107,0.3), rgba(185,154,107,0.06)); color: var(--gold-highlight); font-family: var(--font-display); font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 36px 40px 70px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 22px; align-items: start; }
+  .full { grid-column: 1 / -1; }
+
+  .card { background-color: var(--surface-card); background-image: var(--glow-card-inner); border: 1px solid var(--border-card); border-radius: 22px; padding: 28px; }
+  .card.hero { border-color: var(--line-gold-mid); box-shadow: var(--shadow-card); }
+  .sec { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-base); margin-bottom: 4px; }
+
+  /* hero */
+  .hero-top { display: flex; align-items: center; justify-content: space-between; }
+  .live { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+  .live-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green-success); animation: pulse 1.6s ease infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .earn-big { font-family: var(--font-display); font-weight: 800; font-size: 72px; line-height: 1; letter-spacing: 0.005em; margin: 12px 0 8px; }
+  .earn-big small { font-size: 30px; color: var(--text-secondary); font-weight: 700; margin-left: 8px; -webkit-text-fill-color: var(--text-secondary); }
+  .earn-row { display: flex; align-items: center; gap: 14px; }
+  .roi-badge { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 999px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.4); color: var(--green-success); font-size: 17px; font-weight: 800; }
+
+  /* stat tiles */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
+  .tile { background: var(--surface-void); border: 1px solid var(--line-white-soft); border-radius: 16px; padding: 18px 20px; }
+  .tile.win { border-color: var(--line-gold-mid); background: radial-gradient(120% 100% at 50% 0%, rgba(185,154,107,0.12), var(--surface-void) 70%); }
+  .tile .tk { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); }
+  .tile .tv { font-family: var(--font-display); font-size: 34px; font-weight: 800; margin-top: 8px; font-variant-numeric: tabular-nums; }
+
+  /* balance + actions (right col) */
+  .kv { display: flex; justify-content: space-between; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--line-white-soft); }
+  .kv:last-of-type { border-bottom: 0; }
+  .kv .k { font-size: 14px; color: var(--text-secondary); }
+  .kv .v { font-size: 17px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .kv .v small { color: var(--gold-base); font-weight: 600; font-size: 13px; margin-left: 6px; }
+  .acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+  .act { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 80px; border: 1px solid var(--line-white-soft); background: var(--surface-void); border-radius: 14px; color: var(--color-cream); font-size: 12px; font-weight: 700; cursor: pointer; transition: transform .12s, border-color .15s; text-decoration: none; }
+  .act:hover { border-color: var(--line-gold-mid); transform: translateY(-2px); }
+  .act .ic { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(140deg, rgba(185,154,107,0.22), rgba(185,154,107,0.05)); color: var(--gold-highlight); }
+
+  /* engines */
+  .engine { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line-white-soft); }
+  .engine:last-child { border-bottom: 0; }
+  .e-ic { width: 50px; height: 50px; border-radius: 14px; flex: none; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line-gold-soft); background: var(--surface-void); color: var(--gold-highlight); }
+  .e-body { flex: 1; min-width: 0; }
+  .e-name { font-size: 16px; font-weight: 700; color: var(--color-cream); }
+  .e-meta { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+  .e-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex: none; }
+  .e-status { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-success); }
+  .heartbeat { width: 8px; height: 8px; border-radius: 50%; background: var(--green-success); animation: pulse 1.4s ease infinite; }
+  .e-today { font-size: 16px; font-weight: 800; color: var(--green-success); font-variant-numeric: tabular-nums; }
+  .streak { display: flex; gap: 5px; margin-top: 8px; }
+  .streak i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.14); }
+  .streak i.w { background: var(--green-success); }
+  .streak i.l { background: var(--red-alert); }
+  .esprk { width: 100%; height: 34px; margin-top: 8px; }
+
+  /* trading terminal */
+  .chart-card { padding: 0; overflow: hidden; }
+  .chart-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 20px 24px 14px; flex-wrap: wrap; }
+  .ch-sym { display: flex; align-items: center; gap: 11px; flex-wrap: nowrap; min-width: 0; }
+  .ch-pair { font-family: var(--font-display); font-size: 22px; font-weight: 800; letter-spacing: 0.04em; color: var(--color-cream); white-space: nowrap; }
+  .ch-total { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 10px; border: 1px solid var(--line-gold-mid); background: rgba(185,154,107,0.08); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
+  .ch-total b { font-size: 17px; letter-spacing: 0; color: var(--green-success); }
+  .ch-div { width: 1px; height: 28px; background: var(--line-white-soft); }
+  .ch-syms { display: flex; gap: 6px; margin-left: 4px; }
+  .ch-chip { font-family: var(--font-mono); font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--line-white-soft); color: var(--text-secondary); letter-spacing: 0.04em; transition: opacity .3s; }
+  .ch-chip.on { color: var(--color-ink); background: linear-gradient(125deg, var(--gold-highlight), var(--gold-base)); border-color: transparent; }
+  .ch-perp { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: var(--gold-base); border: 1px solid var(--line-gold-mid); border-radius: 6px; padding: 3px 7px; }
+  .ch-price { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .ch-chg { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .ch-tabs { display: flex; gap: 4px; }
+  .ch-tabs button { appearance: none; cursor: pointer; border: 1px solid transparent; background: var(--surface-void); color: var(--text-secondary); font-family: var(--font-mono); font-size: 12px; font-weight: 700; padding: 7px 12px; border-radius: 8px; }
+  .ch-tabs button.active { color: var(--color-ink); background: linear-gradient(125deg, var(--gold-highlight), var(--gold-base)); }
+  .chart-wrap { position: relative; height: 320px; padding: 0 14px; }
+  .chart-wrap canvas { width: 100%; height: 100%; display: block; }
+  .ai-hud { position: absolute; top: 16px; left: 28px; display: flex; flex-direction: column; gap: 5px; align-items: flex-start; pointer-events: none; }
+  .ai-hud .hud-row { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10.5px; color: var(--text-secondary); background: rgba(7,5,4,0.55); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line-white-soft); }
+  .ai-hud .hud-row b { color: var(--gold-glow); font-weight: 700; }
+  .ai-hud .hud-core { color: var(--gold-base); letter-spacing: 0.08em; }
+  .chart-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 24px 20px; border-top: 1px solid var(--line-white-soft); margin-top: 6px; flex-wrap: wrap; }
+  .chart-legend { display: flex; align-items: center; gap: 16px; font-size: 12px; }
+  .lg { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .lg i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+
+  /* pulse feed */
+  .feed { background: var(--color-ink); border: 1px solid var(--line-white-soft); border-radius: 16px; padding: 20px 24px; font-family: var(--font-mono); font-size: 13.5px; line-height: 2; }
+  .feed-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .feed-head .fl { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; color: var(--accent-base); }
+  .feed-head .fn { font-size: 11px; color: var(--text-secondary); }
+  .feed-line { display: flex; gap: 10px; color: var(--text-secondary); animation: feedin .35s ease; }
+  .feed-line b { font-weight: 700; }
+  .feed-line.g b { color: var(--green-success); }
+  .feed-line.a b { color: var(--gold-glow); }
+  @keyframes feedin { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
+
+  .cs-float { position: fixed; right: 28px; bottom: 28px; z-index: 40; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(125deg, var(--gold-highlight), var(--gold-base) 60%, var(--gold-deep)); color: var(--color-ink); border: 0; cursor: pointer; box-shadow: var(--shadow-glow-gold); text-decoration: none; }
+
+  @media (max-width: 1040px) {
+    .wrap { grid-template-columns: 1fr; padding: 26px 20px 64px; }
+    .nav { padding: 0 18px; }
+    .nav-links, .bal-pill { display: none; }
+    .earn-big { font-size: 52px; }
+    .tiles { grid-template-columns: 1fr 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
+</style>
+</head>
+<body>
+  <template id="__bundler_thumbnail" data-bg-color="#070504">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#070504"></rect>
+      <text x="600" y="380" text-anchor="middle" font-family="Georgia, serif" font-size="150" font-weight="800" fill="#e5c398">+$</text>
+      <rect x="360" y="450" width="480" height="14" rx="7" fill="#10b981"></rect>
+      <circle cx="420" cy="560" r="30" fill="none" stroke="#b99a6b" stroke-width="8"></circle>
+      <circle cx="540" cy="560" r="30" fill="none" stroke="#b99a6b" stroke-width="8"></circle>
+      <circle cx="660" cy="560" r="30" fill="none" stroke="#e5c398" stroke-width="8"></circle>
+    </svg>
+  </template>
+
+  <nav class="nav">
+    <div class="brand"><img src="brand/icon-gold.png" alt="LONGRISE"><span class="wm">LONG<em>RISE</em></span></div>
+    <div class="nav-links">
+      <a href="#" class="active">DASHBOARD</a>
+      <a href="#">PACKAGES</a>
+      <a href="#">REWARDS</a>
+      <a href="#">WALLET</a>
+    </div>
+    <div class="nav-right">
+      <div class="bal-pill"><span class="k">Total</span><span class="v num">$38,344.72</span></div>
+      <div class="avatar">DP</div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <!-- HERO: today's earnings -->
+    <div class="card hero full">
+      <div class="hero-top">
+        <div class="sec">Liquidity Engagement Portfolio</div>
+        <span class="live"><span class="live-dot"></span>earning now</span>
+      </div>
+      <div class="earn-big gold num">+$<span id="earn">412.18</span><small>USDT today</small></div>
+      <div class="earn-row">
+        <span class="roi-badge">▲ ROI <span id="roi">0.7</span>%</span>
+        <span class="muted" style="font-size:15px">Daily dividend · credited in real time</span>
+      </div>
+      <div class="tiles">
+        <div class="tile"><div class="tk">Profit</div><div class="tv green num">+$1,864</div></div>
+        <div class="tile"><div class="tk">CNYT</div><div class="tv gold num">5,320</div></div>
+        <div class="tile"><div class="tk">ROI today</div><div class="tv num" style="color:var(--color-cream)">0.7%</div></div>
+        <div class="tile win"><div class="tk">Win rate</div><div class="tv gold num">92%</div></div>
+      </div>
+    </div>
+
+    <!-- LEFT: how it earns -->
+    <div class="card">
+      <div class="sec">How LongRise Earns</div>
+      <div style="margin-top:8px">
+        <div class="engine">
+          <span class="e-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l1.5-9 4.5 4 3-6 3 6 4.5-4L21 17zM4 21h16"/></svg></span>
+          <div class="e-body">
+            <div class="e-name">Offline Casino Auto-Bet</div>
+            <div class="e-meta">92% win · 12 tables · 3 venues</div>
+            <div class="streak" id="streak"></div>
+          </div>
+          <div class="e-right"><span class="e-status"><span class="heartbeat"></span>Active</span><span class="e-today">+$184.20</span></div>
+        </div>
+        <div class="engine">
+          <span class="e-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span>
+          <div class="e-body">
+            <div class="e-name">Online Casino Auto-Bet</div>
+            <div class="e-meta num">round #<span id="round">48,213</span> · 89% win</div>
+          </div>
+          <div class="e-right"><span class="e-status"><span class="heartbeat"></span>Active</span><span class="e-today">+$142.80</span></div>
+        </div>
+        <div class="engine">
+          <span class="e-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v4M7 13v8M5 7h4v6H5zM17 3v6M17 17v4M15 9h4v8h-4z"/></svg></span>
+          <div class="e-body">
+            <div class="e-name">Exchange Futures (AI)</div>
+            <div class="e-meta">BTC/USDT · live terminal below</div>
+          </div>
+          <div class="e-right"><span class="e-status"><span class="heartbeat"></span>Active</span><span class="e-today">+$85.18</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: balance + actions -->
+    <div class="card">
+      <div class="sec">My Wallet</div>
+      <div style="margin-top:10px">
+        <div class="kv"><span class="k">Total assets</span><span class="v gold num">$38,344.72</span></div>
+        <div class="kv"><span class="k">Available</span><span class="v num">$12,480.50</span></div>
+        <div class="kv"><span class="k">Earned dividends</span><span class="v green num">$1,864.22</span></div>
+        <div class="kv"><span class="k">CNYT rewards</span><span class="v num">5,320<small>≈ $751</small></span></div>
+      </div>
+      <div class="acts">
+        <a href="#" class="act"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></span>Deposit</a>
+        <a href="#" class="act"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9M7 13l5-5 5 5M5 4h14"/></svg></span>Withdraw</a>
+        <a href="#" class="act"><span class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3L11 14M22 3l-7 19-4-8-8-4z"/></svg></span>Send</a>
+        <a href="#" class="act"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v13M3.5 7.5L7 4l3.5 3.5M17 20V7M13.5 16.5L17 20l3.5-3.5"/></svg></span>Swap</a>
+      </div>
+    </div>
+
+    <!-- LIVE TRADING TERMINAL -->
+    <div class="card chart-card full">
+      <div class="chart-head">
+        <div class="ch-sym">
+          <span class="ch-total">TOTAL <b id="chTotal">+0.00%</b></span>
+          <span class="ch-div"></span>
+          <span class="ch-pair" id="chPair">BTC/USDT</span>
+          <span class="ch-perp">PERP</span>
+          <span class="ch-price gold" id="cprice">—</span>
+          <span class="ch-chg green" id="cchg">+0.00%</span>
+          <span class="ch-syms" id="chSyms">
+            <span class="ch-chip on">BTC</span>
+            <span class="ch-chip">ETH</span>
+            <span class="ch-chip">SOL</span>
+          </span>
+        </div>
+        <div class="ch-tabs">
+          <button>1m</button><button class="active">5m</button><button>15m</button><button>1H</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="ftChart"></canvas>
+        <div class="ai-hud">
+          <span class="hud-row hud-core">NEURAL CORE V6</span>
+          <span class="hud-row">signals <b id="hudSps">1,284</b>/s</span>
+          <span class="hud-row">latency <b id="hudLat">14</b>ms</span>
+        </div>
+      </div>
+      <div class="chart-foot">
+        <div class="chart-legend">
+          <span class="lg"><i style="background:var(--gold-glow)"></i>EMA 9</span>
+          <span class="lg"><i style="background:var(--green-success);width:8px;height:8px;border-radius:2px"></i>Up</span>
+          <span class="lg"><i style="background:var(--red-alert);width:8px;height:8px;border-radius:2px"></i>Down</span>
+        </div>
+        <span class="e-status" id="footMsg"><span class="heartbeat"></span>AI Engine Active · illustrative signal stream</span>
+      </div>
+    </div>
+
+    <!-- pulse feed -->
+    <div class="full">
+      <div class="feed">
+        <div class="feed-head"><span class="fl">Real-time Pulse Feed</span><span class="fn">NODE: JP_TYO_04</span></div>
+        <div id="feed"></div>
+      </div>
+    </div>
+  </div>
+
+  <a href="#" class="cs-float" aria-label="Support"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 10-9-9M12 17v.01M9.5 9.5a2.5 2.5 0 114 2c-.8.6-1.5 1-1.5 2"/></svg></a>
+
+<script src="lr/candles.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // trading terminal
+  var SYMBOLS = [
+    { sym: "BTC/USDT", start: 68200, dec: 1 },
+    { sym: "ETH/USDT", start: 3520, dec: 2 },
+    { sym: "SOL/USDT", start: 166, dec: 2 }
+  ];
+  var curI = 0;
+  var changes = [5.29, 2.14, 3.81];
+  var cpriceEl = document.getElementById("cprice"), cchgEl = document.getElementById("cchg"),
+      chPair = document.getElementById("chPair"), chTotal = document.getElementById("chTotal"),
+      chChips = document.querySelectorAll("#chSyms .ch-chip");
+  var reduceM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function setChg(el, chg) { el.textContent = (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%"; el.style.color = chg >= 0 ? "var(--green-success)" : "var(--red-alert)"; }
+  function refreshTotal() { var t = changes[0] + changes[1] + changes[2]; chTotal.textContent = (t >= 0 ? "+" : "") + t.toFixed(2) + "%"; chTotal.style.color = t >= 0 ? "var(--green-success)" : "var(--red-alert)"; }
+  refreshTotal();
+
+  var chart = window.LRChart(document.getElementById("ftChart"), {
+    start: SYMBOLS[0].start, decimals: SYMBOLS[0].dec,
+    onStats: function (s) {
+      var sps = document.getElementById("hudSps"), lat = document.getElementById("hudLat");
+      if (sps) sps.textContent = s.sps.toLocaleString("en-US");
+      if (lat) lat.textContent = s.latency;
+    },
+    onPrice: function (last, openRef) {
+      var d = SYMBOLS[curI].dec;
+      cpriceEl.textContent = last.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+      var chg = ((last - openRef) / openRef) * 100;
+      setChg(cchgEl, chg); changes[curI] = chg; refreshTotal();
+    }
+  });
+
+  function rollSymbol() {
+    curI = (curI + 1) % SYMBOLS.length;
+    var s = SYMBOLS[curI];
+    chPair.textContent = s.sym;
+    for (var i = 0; i < chChips.length; i++) chChips[i].className = "ch-chip" + (i === curI ? " on" : "");
+    chart.reseed(s.start, s.dec);
+  }
+  if (!reduceM) setInterval(rollSymbol, 20000);
+
+  // rolling AI message box (BTC/ETH/SOL alternating)
+  var footMsg = document.getElementById("footMsg");
+  var footSyms = ["BTC", "ETH", "SOL"], footActs = ["position synced", "signal executed", "pattern matched", "entry confirmed", "exit hedged"], fI = 0;
+  function rollFoot() {
+    var sym = footSyms[fI % 3]; fI++;
+    var act = footActs[Math.floor(Math.random() * footActs.length)];
+    footMsg.innerHTML = '<span class="heartbeat"></span>AI Engine · ' + sym + '/USDT · ' + act + ' · conf ' + (0.86 + Math.random() * 0.12).toFixed(2);
+  }
+  rollFoot();
+  if (!reduceM) setInterval(rollFoot, 2800);
+  var fmt = function (n, d) { if (d === undefined) d = 2; return Number(n).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d }); };
+
+  // streak
+  var streakEl = document.getElementById("streak");
+  function drawStreak() {
+    var h = "";
+    for (var i = 0; i < 6; i++) h += '<i class="' + (Math.random() > 0.12 ? "w" : "l") + '"></i>';
+    streakEl.innerHTML = h;
+  }
+  drawStreak();
+
+  // feed
+  var pool = [
+    { e: "Offline Casino", t: "Table 04 · round won", c: "g" },
+    { e: "DAILY_ROI", t: "+$0.55 credited", c: "g" },
+    { e: "Futures BTC/USDT", t: "position synced", c: "a" },
+    { e: "CNYT_AIRDROP", t: "+3.52 processed", c: "a" },
+    { e: "Online Casino", t: "round settled", c: "g" },
+    { e: "DAILY_ROI", t: "+$0.16 credited", c: "g" },
+    { e: "Futures ETH/USDT", t: "signal executed", c: "a" },
+    { e: "Offline Casino", t: "Macau · table synced", c: "g" }
+  ];
+  var feedEl = document.getElementById("feed");
+  function feedItem() { return pool[Math.floor(Math.random() * pool.length)]; }
+  function renderFeed(list) {
+    feedEl.innerHTML = list.map(function (x) { return '<div class="feed-line ' + x.c + '"><span>&#9656;</span><b>' + x.e + '</b><span>' + x.t + '</span></div>'; }).join("");
+  }
+  var feed = [feedItem(), feedItem(), feedItem(), feedItem(), feedItem()];
+  renderFeed(feed);
+
+  var earn = 412.18, round = 48213;
+  var earnEl = document.getElementById("earn"), roundEl = document.getElementById("round");
+
+  if (!reduce) {
+    setInterval(function () {
+      earn += Math.random() * 0.7; earnEl.textContent = fmt(earn);
+      round += Math.floor(Math.random() * 3) + 1; roundEl.textContent = fmt(round, 0);
+    }, 2000);
+    setInterval(function () { feed = [feedItem()].concat(feed).slice(0, 6); renderFeed(feed); }, 2700);
+    setInterval(drawStreak, 3400);
+  }
+})();
+</script>
+</body>
+</html>

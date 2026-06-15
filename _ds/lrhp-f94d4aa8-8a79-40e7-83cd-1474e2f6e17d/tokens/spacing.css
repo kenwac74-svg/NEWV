@@ -1,0 +1,28 @@
+/* LONGRISE — Spacing, radius & shadow tokens */
+:root{
+  /* ---- Spacing scale ---- */
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:18px;   /* grid gutter (12-col liquid grid) */
+  --space-5:24px;   /* grid gutter max */
+  --space-6:34px;
+  --space-7:54px;
+  --space-8:110px;  /* section padding */
+
+  /* ---- Radius ---- */
+  --radius-sm:4px;
+  --radius-md:9px;
+  --radius-lg:14px;
+  --radius-xl:34px;  /* cards / panels */
+  --radius-pill:999px;
+
+  /* ---- Shadows ---- */
+  --shadow-card:0 20px 50px rgba(0,0,0,0.55);
+  --shadow-panel:0 30px 90px rgba(0,0,0,0.88);
+  --shadow-glow-gold:0 15px 45px rgba(251,191,36,0.24);
+  --shadow-glow-red:0 15px 45px rgba(220,38,38,0.24);
+
+  /* ---- Inner glow (radial, spec) ---- */
+  --glow-card-inner:radial-gradient(120% 80% at 50% -10%,rgba(185,154,107,0.10),transparent 60%); /* @kind color */
+}
